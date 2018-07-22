@@ -52,37 +52,40 @@ def	addHost(src_host,links,IPs,config):
 	mylinks = []
 	for link in links:
 		if link['src_host'] == src_host:
-			mylinks.append(link)
+			mylinks.append(link)	
+	
+	cmd  = 'if [ "$1" == "' + abb[src_host] + '" ]\n'
+	cmd += 'then\n'
 
-	cmd  = '# remember name of the setting\n'
-	cmd += 'export RIOT_NETEM=' + src_host + '\n\n'
+	cmd += '\t' + '# remember name of the setting\n'
+	cmd += '\t' + 'export RIOT_NETEM=' + src_host + '\n'
 
 	if not mylinks:
-		print 'No link found with source of ' + src_host
-		return ''
-	
-	cmd += 'if [ "$1" == "' + abb[src_host] + '" ]\n'
-	cmd += 'then\n'
-	cmd += '\t' + '# create a band for each destination\n'
-	cmd += '\t' + tc_cmd['band'] + str(len(mylinks)) + '\n'
+		print  'No link found with source of ' + src_host
+		cmd += 'fi\n'
+		return cmd
 
-	cmd += '\n\n'
+	cmd += '\n'
+	cmd += '\t' + '# create a band for each destination\n'
+	cmd += '\t' + tc_cmd['band'] + str(len(mylinks)+1) + '\n'
+
+	cmd += '\n'
 	cmd += '\t' + '# apply delay to each band' + '\n'
 	
 	for i in range(len(mylinks)):
 
 		cmd += '\t' + '# -- ' + mylinks[i]['dst_host'] + '\n'
-		cmd += '\t' + addDelay(config, mylinks[i], (1+i)) + '\n'
+		cmd += '\t' + addDelay(config, mylinks[i], (2+i)) + '\n'
 
 
-	cmd += '\n\n'
+	cmd += '\n'
 	cmd += '\t' + '# filter outgoing traffic to bands' + '\n'
 
 	for i in range(len(mylinks)):
 
-		cmd += '\t' + tc_cmd['band'] + IPs[mylinks[i]['dst_host']] + '/32 flowid 1:' + str(1+i) + '\n'
+		cmd += '\t' + tc_cmd['band'] + IPs[mylinks[i]['dst_host']] + '/32 flowid 1:' + str(2+i) + '\n'
 
-	cmd += '\n\n'
+	cmd += '\n'
 	cmd += '\t' + '# default band'  + '\n'
 	cmd += '\t' + tc_cmd['default'] + '\n'
 	cmd += 'fi\n'
