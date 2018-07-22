@@ -1,0 +1,116 @@
+#!/bin/bash
+
+# remember name of the setting
+export RIOT_NETEM=orange1
+
+if [ "$1" == "o1" ]
+then
+	# create a band for each destination
+	sudo tc qdisc add dev eth0 root handle 1: prio bands 1
+
+
+	# apply delay to each band
+	# -- pink1
+	sudo tc qdisc add dev eth0 parent 1:1 handle 10: netem delay 339.73ms 37.18ms distribution cloud_2_2_o1_p1 loss 0.0493%
+
+
+	# filter outgoing traffic to bands
+	sudo tc qdisc add dev eth0 root handle 1: prio bands 169.254.73.103/32 flowid 1:1
+
+
+	# default band
+	sudo tc filter add dev eth0 protocol ip parent 1:0 prio 1 u32 match u32 0 0 flowid 1:1
+fi
+
+# remember name of the setting
+export RIOT_NETEM=orange0
+
+if [ "$1" == "o0" ]
+then
+	# create a band for each destination
+	sudo tc qdisc add dev eth0 root handle 1: prio bands 1
+
+
+	# apply delay to each band
+	# -- pink0
+	sudo tc qdisc add dev eth0 parent 1:1 handle 10: netem delay 310.34ms 36.61ms distribution cloud_2_2_o0_p0 loss 0.0218%
+
+
+	# filter outgoing traffic to bands
+	sudo tc qdisc add dev eth0 root handle 1: prio bands 169.254.83.65/32 flowid 1:1
+
+
+	# default band
+	sudo tc filter add dev eth0 protocol ip parent 1:0 prio 1 u32 match u32 0 0 flowid 1:1
+fi
+
+# remember name of the setting
+export RIOT_NETEM=blue1
+
+if [ "$1" == "b1" ]
+then
+	# create a band for each destination
+	sudo tc qdisc add dev eth0 root handle 1: prio bands 1
+
+
+	# apply delay to each band
+	# -- pink1
+	sudo tc qdisc add dev eth0 parent 1:1 handle 10: netem delay 330.32ms 37.66ms distribution cloud_2_2_b1_p1 loss 0.0431%
+
+
+	# filter outgoing traffic to bands
+	sudo tc qdisc add dev eth0 root handle 1: prio bands 169.254.73.103/32 flowid 1:1
+
+
+	# default band
+	sudo tc filter add dev eth0 protocol ip parent 1:0 prio 1 u32 match u32 0 0 flowid 1:1
+fi
+
+# remember name of the setting
+export RIOT_NETEM=blue0
+
+if [ "$1" == "b0" ]
+then
+	# create a band for each destination
+	sudo tc qdisc add dev eth0 root handle 1: prio bands 1
+
+
+	# apply delay to each band
+	# -- pink0
+	sudo tc qdisc add dev eth0 parent 1:1 handle 10: netem delay infms infms distribution cloud_2_2_b0_p0 loss 0.0121%
+
+
+	# filter outgoing traffic to bands
+	sudo tc qdisc add dev eth0 root handle 1: prio bands 169.254.83.65/32 flowid 1:1
+
+
+	# default band
+	sudo tc filter add dev eth0 protocol ip parent 1:0 prio 1 u32 match u32 0 0 flowid 1:1
+fi
+
+
+# remember name of the setting
+export RIOT_NETEM=pink0
+
+if [ "$1" == "p0" ]
+then
+	# create a band for each destination
+	sudo tc qdisc add dev eth0 root handle 1: prio bands 2
+
+
+	# apply delay to each band
+	# -- blue1
+	sudo tc qdisc add dev eth0 parent 1:1 handle 10: netem delay 321.42ms 37.89ms distribution cloud_2_2_p0_b1 loss 0.0329%
+	# -- orange1
+	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 320.58ms 36.93ms distribution cloud_2_2_p0_o1 loss 0.0325%
+
+
+	# filter outgoing traffic to bands
+	sudo tc qdisc add dev eth0 root handle 1: prio bands 169.254.60.250/32 flowid 1:1
+	sudo tc qdisc add dev eth0 root handle 1: prio bands 169.254.217.43/32 flowid 1:2
+
+
+	# default band
+	sudo tc filter add dev eth0 protocol ip parent 1:0 prio 1 u32 match u32 0 0 flowid 1:1
+fi
+
