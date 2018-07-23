@@ -67,7 +67,7 @@ def	addHost(src_host,links,IPs,config):
 
 	cmd += '\n'
 	cmd += '\t' + '# create a band for each destination\n'
-	cmd += '\t' + tc_cmd['band'] + str(len(mylinks)+1) + '\n'
+	cmd += '\t' + tc_cmd['band'] + str(max(len(mylinks)+1,3)) + '\n'
 
 	cmd += '\n'
 	cmd += '\t' + '# apply delay to each band' + '\n'
@@ -83,7 +83,7 @@ def	addHost(src_host,links,IPs,config):
 
 	for i in range(len(mylinks)):
 
-		cmd += '\t' + tc_cmd['band'] + IPs[mylinks[i]['dst_host']] + '/32 flowid 1:' + str(2+i) + '\n'
+		cmd += '\t' + tc_cmd['filter'] + IPs[mylinks[i]['dst_host']] + '/32 flowid 1:' + str(2+i) + '\n'
 
 	cmd += '\n'
 	cmd += '\t' + '# default band'  + '\n'
@@ -168,6 +168,8 @@ def	genEmulationScript(config, links, IPs):
 		for host in IPs:
 			#print 'Adding host ' + host + ' to the script'
 			fh.write(addHost(host,links,IPs,config) + '\n')
+
+	os.system("chmod +x " + fn)
 
 
 ########################################
