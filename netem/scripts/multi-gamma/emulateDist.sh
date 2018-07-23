@@ -97,7 +97,7 @@ do
 		continue
 	fi	
 	
-	IP=$(../../IP/echoIP.sh $NODE)
+	IP=$(../../../ip/echoIP.sh $NODE)
 	
 	sudo tc filter add dev eth0 protocol ip parent 1:0 prio 1 u32 match ip dst $IP/32 flowid 1:$VAR	
 
