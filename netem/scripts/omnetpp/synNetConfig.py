@@ -35,14 +35,14 @@ def	getNetEmID(config,link):
 	return config + '_' + abb[link['src_host']] + '_' + abb[link['dst_host']]
 
 
-def	addDelay(config,link,var):	
+def	addDelay(config,link,var,handle):	
 
 	avg_us, std_us = distParams[getNetEmID(config,link)]
 
 	avg_ms = round(avg_us/1000,2)
 	std_ms = round(std_us/1000,2)
 
-	cmd  = tc_cmd['delay'] + str(var)+' handle 10: netem '
+	cmd  = tc_cmd['delay'] + str(var) + ' handle ' + str(handle) + ': netem '
 	cmd += 'delay ' + str(avg_ms) + 'ms ' + str(std_ms) + 'ms ' 
 	cmd += 'distribution ' + getNetEmID(config,link) + ' '
 	cmd += 'loss ' + str(link['loss_rate']) + '%'
@@ -78,7 +78,7 @@ def	addHost(src_host,links,IPs,config):
 	for i in range(len(mylinks)):
 
 		cmd += '\t' + '# -- ' + mylinks[i]['dst_host'] + '\n'
-		cmd += '\t' + addDelay(config, mylinks[i], (2+i)) + '\n'
+		cmd += '\t' + addDelay(config, mylinks[i], (2+i), (10+i)) + '\n'
 
 
 	cmd += '\n'
