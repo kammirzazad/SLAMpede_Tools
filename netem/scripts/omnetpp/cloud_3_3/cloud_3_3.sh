@@ -10,7 +10,7 @@ then
 
 	# apply delay to each band
 	# -- pink1
-	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 341.68ms 36.88ms distribution cloud_3_3_o1_p1 loss 0.0515%
+	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 341.9ms 36.92ms distribution cloud_3_3_o1_p1 loss 0.0515%
 
 	# filter outgoing traffic to bands
 	sudo tc filter add dev eth0 protocol ip parent 1:0 prio 1 u32 match ip dst 169.254.73.103/32 flowid 1:2
@@ -29,7 +29,7 @@ then
 
 	# apply delay to each band
 	# -- pink0
-	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 309.17ms 36.18ms distribution cloud_3_3_o0_p0 loss 0.0207%
+	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 308.87ms 36.17ms distribution cloud_3_3_o0_p0 loss 0.0207%
 
 	# filter outgoing traffic to bands
 	sudo tc filter add dev eth0 protocol ip parent 1:0 prio 1 u32 match ip dst 169.254.83.65/32 flowid 1:2
@@ -54,7 +54,7 @@ then
 
 	# apply delay to each band
 	# -- pink0
-	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 303.41ms 37.04ms distribution cloud_3_3_b0_p0 loss 0.0112%
+	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 303.18ms 36.76ms distribution cloud_3_3_b0_p0 loss 0.0112%
 
 	# filter outgoing traffic to bands
 	sudo tc filter add dev eth0 protocol ip parent 1:0 prio 1 u32 match ip dst 169.254.83.65/32 flowid 1:2
@@ -73,7 +73,7 @@ then
 
 	# apply delay to each band
 	# -- pink0
-	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 318.68ms 36.55ms distribution cloud_3_3_p1_p0 loss 0.03%
+	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 319.02ms 36.81ms distribution cloud_3_3_p1_p0 loss 0.03%
 
 	# filter outgoing traffic to bands
 	sudo tc filter add dev eth0 protocol ip parent 1:0 prio 1 u32 match ip dst 169.254.83.65/32 flowid 1:2
@@ -92,7 +92,7 @@ then
 
 	# apply delay to each band
 	# -- blue1
-	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay infms infms distribution cloud_3_3_p0_b1 loss 0.0281%
+	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 321.98ms 38.91ms distribution cloud_3_3_p0_b1 loss 0.0281%
 
 	# filter outgoing traffic to bands
 	sudo tc filter add dev eth0 protocol ip parent 1:0 prio 1 u32 match ip dst 169.254.60.250/32 flowid 1:2

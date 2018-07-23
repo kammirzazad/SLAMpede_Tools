@@ -7,16 +7,19 @@
 #
 #	Author	    : Kamyar Mirzazad (kammirzazad@utexas.edu)
 #	Created  On : Fri, July 20th, 2018
-#	Modified On : Sat, July 21st, 2018
+#	Modified On : Mon, July 23rd, 2018
 #
 
 import	os
 import	sys
 import	json
+import  numpy as np
 import	scipy.stats as st
 
 minEthDelay = 250
 path2converter = '/home/osboxes/Documents/RIoT_slampede/netem/tables/maketable'
+
+distParams = {}
 
 abb = { 'blue0':'b0', 'orange0':'o0', 'pink0':'p0', 'blue1':'b1', 'orange1':'o1', 'pink1':'p1' } 
 
@@ -34,7 +37,7 @@ def	getNetEmID(config,link):
 
 def	addDelay(config,link,var):	
 
-	avg_us, std_us, loss = getDistParams(link)	
+	avg_us, std_us = distParams[getNetEmID(config,link)]
 
 	avg_ms = round(avg_us/1000,2)
 	std_ms = round(std_us/1000,2)
@@ -42,7 +45,7 @@ def	addDelay(config,link,var):
 	cmd  = tc_cmd['delay'] + str(var)+' handle 10: netem '
 	cmd += 'delay ' + str(avg_ms) + 'ms ' + str(std_ms) + 'ms ' 
 	cmd += 'distribution ' + getNetEmID(config,link) + ' '
-	cmd += 'loss ' + str(loss) + '%'
+	cmd += 'loss ' + str(link['loss_rate']) + '%'
 	
 	return cmd
 
@@ -93,30 +96,6 @@ def	addHost(src_host,links,IPs,config):
 	return cmd
 
 
-def	getDistParams(link):
-
-	dist  = getattr(st, link['distribution'])
-	loc   = float(link['loc'].split('us')[0]) - minEthDelay
-	scale = float(link['scale'].split('us')[0])
-
-	if 'shape3' in link:
-		std = dist.std(link['shape'], link['shape2'], link['shape3'], loc=loc, scale=scale)
-		avg = dist.mean(link['shape'], link['shape2'], link['shape3'], loc=loc, scale=scale)
-
-	elif 'shape2' in link:
-		std = dist.std(link['shape'], link['shape2'], loc=loc, scale=scale)
-		avg = dist.mean(link['shape'], link['shape2'], loc=loc, scale=scale)
-
-	elif 'shape' in link:
-		std = dist.std(link['shape'], loc=loc, scale=scale)
-		avg = dist.mean(link['shape'], loc=loc, scale=scale)
-	else:
-		std = dist.std(loc=loc, scale=scale)
-		avg = dist.mean(loc=loc, scale=scale)
-
-	return (avg,std,link['loss_rate'])
-
-
 def	getEthIPs(hosts):
 	IPs = {}
 	for host in hosts:		
@@ -149,8 +128,12 @@ def	genDistFile(config, link):
 	
 	distFN = config + '/dist/' + getNetEmID(config,link) + '.dist'
 
+	data = genData(link)
+
+	distParams[getNetEmID(config,link)] = (np.mean(data), np.std(data))
+
 	with open('temp.dat', 'w') as fh:
-		for datum in genData(link):
+		for datum in data:
 			fh.write(str(round(datum,3))+'\n')
 
 	os.system(path2converter + ' temp.dat > ' + distFN)
@@ -188,10 +171,10 @@ os.system('rm -rf ' + config + '/')
 os.system('mkdir '  + config + '/')
 os.system('mkdir '  + config + '/dist/')
 
-genEmulationScript(config, net['links'], getEthIPs(net['hosts']))
-
 for link in net['links']:
 	genDistFile(config, link)
 	#print 'generated ' + getNetEmID(config,link)+'.dist'
+
+genEmulationScript(config, net['links'], getEthIPs(net['hosts']))
 
 ########################################
