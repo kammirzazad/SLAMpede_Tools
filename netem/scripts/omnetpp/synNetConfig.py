@@ -16,6 +16,7 @@ import	json
 import  numpy as np
 import	scipy.stats as st
 
+numPoints = 250000
 minEthDelay = 250
 path2converter = '/home/osboxes/Documents/RIoT_slampede/netem/tables/maketable'
 
@@ -113,13 +114,13 @@ def	genData(link):
 	scale = float(link['scale'].split('us')[0])
 
 	if 'shape3' in link:
-		data = dist.rvs(link['shape'], link['shape2'], link['shape3'], loc=loc, scale=scale, size=25000)
+		data = dist.rvs(link['shape'], link['shape2'], link['shape3'], loc=loc, scale=scale, size=numPoints)
 	elif 'shape2' in link:
-		data = dist.rvs(link['shape'], link['shape2'], loc=loc, scale=scale, size=25000)
+		data = dist.rvs(link['shape'], link['shape2'], loc=loc, scale=scale, size=numPoints)
 	elif 'shape' in link:
-		data = dist.rvs(link['shape'], loc=loc, scale=scale, size=25000)
+		data = dist.rvs(link['shape'], loc=loc, scale=scale, size=numPoints)
 	else:
-		data = dist.rvs(loc=loc, scale=scale, size=25000)
+		data = dist.rvs(loc=loc, scale=scale, size=numPoints)
 
 	return data
 
