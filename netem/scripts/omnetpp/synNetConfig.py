@@ -45,7 +45,7 @@ def	addDelay(config,link,var,handle):
 	cmd  = tc_cmd['delay'] + str(var) + ' handle ' + str(handle) + ': netem '
 	cmd += 'delay ' + str(avg_ms) + 'ms ' + str(std_ms) + 'ms ' 
 	cmd += 'distribution ' + getNetEmID(config,link) + ' '
-	cmd += 'loss ' + str(link['loss_rate']) + '%'
+	cmd += 'loss ' + str(100*link['loss_rate']) + '%'
 	
 	return cmd
 
