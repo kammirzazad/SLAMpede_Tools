@@ -16,7 +16,7 @@ import	json
 import  numpy as np
 import	scipy.stats as st
 
-numPoints = 250000
+numPoints = 10000
 minEthDelay = 250
 path2converter = '/home/osboxes/Documents/RIoT_slampede/netem/tables/maketable'
 

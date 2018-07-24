@@ -10,7 +10,7 @@ then
 
 	# apply delay to each band
 	# -- pink1
-	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 339.99ms 38.11ms distribution cloud_1_1_o1_p1 loss 4.84%
+	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 339.92ms 37.8ms distribution cloud_1_1_o1_p1 loss 4.84%
 
 	# filter outgoing traffic to bands
 	sudo tc filter add dev eth0 protocol ip parent 1:0 prio 1 u32 match ip dst 169.254.73.103/32 flowid 1:2
@@ -29,9 +29,9 @@ then
 
 	# apply delay to each band
 	# -- blue1
-	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 312.1ms 36.96ms distribution cloud_1_1_o0_b1 loss 2.14%
+	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 311.86ms 37.26ms distribution cloud_1_1_o0_b1 loss 2.14%
 	# -- pink0
-	sudo tc qdisc add dev eth0 parent 1:3 handle 11: netem delay 309.3ms 36.18ms distribution cloud_1_1_o0_p0 loss 2.19%
+	sudo tc qdisc add dev eth0 parent 1:3 handle 11: netem delay 309.16ms 36.25ms distribution cloud_1_1_o0_p0 loss 2.19%
 
 	# filter outgoing traffic to bands
 	sudo tc filter add dev eth0 protocol ip parent 1:0 prio 1 u32 match ip dst 169.254.60.250/32 flowid 1:2
@@ -51,7 +51,7 @@ then
 
 	# apply delay to each band
 	# -- orange1
-	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 329.63ms 37.2ms distribution cloud_1_1_b1_o1 loss 4.06%
+	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 329.83ms 37.61ms distribution cloud_1_1_b1_o1 loss 4.06%
 
 	# filter outgoing traffic to bands
 	sudo tc filter add dev eth0 protocol ip parent 1:0 prio 1 u32 match ip dst 169.254.217.43/32 flowid 1:2
@@ -70,7 +70,7 @@ then
 
 	# apply delay to each band
 	# -- orange0
-	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 300.92ms 37.13ms distribution cloud_1_1_b0_o0 loss 1.47%
+	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 300.64ms 37.63ms distribution cloud_1_1_b0_o0 loss 1.47%
 
 	# filter outgoing traffic to bands
 	sudo tc filter add dev eth0 protocol ip parent 1:0 prio 1 u32 match ip dst 169.254.38.152/32 flowid 1:2
@@ -95,7 +95,7 @@ then
 
 	# apply delay to each band
 	# -- orange1
-	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 320.6ms 37.73ms distribution cloud_1_1_p0_o1 loss 3.41%
+	sudo tc qdisc add dev eth0 parent 1:2 handle 10: netem delay 320.62ms 37.67ms distribution cloud_1_1_p0_o1 loss 3.41%
 
 	# filter outgoing traffic to bands
 	sudo tc filter add dev eth0 protocol ip parent 1:0 prio 1 u32 match ip dst 169.254.217.43/32 flowid 1:2
