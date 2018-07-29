@@ -5,7 +5,7 @@
 #include <cassert>
 #include <fstream>
 
-const unsigned int interval = 10*1000;
+const unsigned int interval = 1000;
 
 class	owDelay
 {
