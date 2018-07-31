@@ -48,9 +48,9 @@ uint	getIdx(char* node)
 	if( strcmp(node,"b0") == 0 ) { return 0; }
 	if( strcmp(node,"o0") == 0 ) { return 1; }	
 	if( strcmp(node,"p0") == 0 ) { return 2; }
-	if( strcmp(node,"b0") == 0 ) { return 3; }
-	if( strcmp(node,"b0") == 0 ) { return 4; }
-	if( strcmp(node,"b0") == 0 ) { return 5; }
+	if( strcmp(node,"b1") == 0 ) { return 3; }
+	if( strcmp(node,"o1") == 0 ) { return 4; }
+	if( strcmp(node,"p1") == 0 ) { return 5; }
 
 	std::cout << "Unknown node " << node << std::endl;
 }
