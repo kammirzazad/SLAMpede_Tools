@@ -7,6 +7,8 @@
 
 const unsigned int interval = 1000;
 
+std::string	WIPs[6] = { "192.168.4.14", "192.168.4.15", "192.168.4.16", "192.168.4.9", "192.168.4.8", "192.168.4.4" };
+
 class	owDelay
 {
 	public:
@@ -41,25 +43,24 @@ class	owDelay
 	std::vector<uint64_t>	delays;
 };
 
-std::string	getIP(char* node)
+uint	getIdx(char* node)
 {
-	if( strcmp(node,"b0") == 0 )
-		return "192.168.4.14";
+	if( strcmp(node,"b0") == 0 ) { return 0; }
+	if( strcmp(node,"o0") == 0 ) { return 1; }	
+	if( strcmp(node,"p0") == 0 ) { return 2; }
+	if( strcmp(node,"b0") == 0 ) { return 3; }
+	if( strcmp(node,"b0") == 0 ) { return 4; }
+	if( strcmp(node,"b0") == 0 ) { return 5; }
 
-	if( strcmp(node,"o0") == 0 )
-		return "192.168.4.15";
+	std::cout << "Unknown node " << node << std::endl;
+}
 
-	if( strcmp(node,"p0") == 0 )
-		return "192.168.4.16";
+uint	getPort(char* srcNode, char* dstNode)
+{
+	uint srcIdx = getIdx(srcNode);
+	uint dstIdx = getIdx(dstNode);
 
-	if( strcmp(node,"b1") == 0 )
-		return "192.168.4.9";
-
-	if( strcmp(node,"o1") == 0 )
-		return "192.168.4.8";
-
-	if( strcmp(node,"p1") == 0 )
-		return "192.168.4.4";
+	return 5000+(6*srcIdx)+dstIdx;
 }
 
 //ipInfo(selfIP,peerIP,selfIF,portNum)
@@ -72,7 +73,7 @@ int 	main(int argc, char* argv[])
 		exit(1);
 	}
 
-	std::string selfIP = getIP(argv[1]);
+	std::string selfIP = WIPs[getIdx(argv[1])];
 	unsigned int numSrc = atoi(argv[2]);
 
 	std::vector<owDelay>	delays;
@@ -81,12 +82,12 @@ int 	main(int argc, char* argv[])
 	for(int i=0; i<numSrc; i++)
 	{
 		delays.emplace_back(argv[3+i], argv[1]);
-		inSockets.emplace_back(ipInfo(selfIP, getIP(argv[3+i]), "wlan0", 5000));
+		inSockets.emplace_back(ipInfo(selfIP, WIPs[getIdx(argv[3+i])], "wlan0", getPort(argv[3+i],argv[1])));
 	}
 
 	for(int i=0; i<(argc-(3+numSrc)); i++)
 	{
-		outSockets.emplace_back(ipInfo(selfIP, getIP(argv[3+numSrc+i]), "wlan0", 5000));
+		outSockets.emplace_back(ipInfo(selfIP, WIPs[getIdx(argv[3+numSrc+i])], "wlan0", getPort(argv[1],argv[3+numSrc+i])));
 	}
 
 	uint64_t now;
