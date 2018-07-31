@@ -95,8 +95,8 @@ int 	main(int argc, char* argv[])
 
 	for(int j=0; j<10000; j++)
 	{
-		for(unsigned int i=0; inSockets.size(); i++)
-		{		
+		for(unsigned int i=0; i<inSockets.size(); i++)
+		{
 			if(inSockets[i].recvTry())
 			{				
 				setTime(now);
