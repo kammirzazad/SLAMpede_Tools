@@ -5,9 +5,13 @@
 #include <cassert>
 #include <fstream>
 
-const unsigned int interval = 1000;
+const uint interval = 1000;
+const uint numPings = 10000;
+const uint numAfter = 1000;
 
-std::string	WIPs[6] = { "192.168.4.14", "192.168.4.15", "192.168.4.16", "192.168.4.9", "192.168.4.8", "192.168.4.4" };
+std::string WIPs[6] = { "192.168.4.14", "192.168.4.15", "192.168.4.16", "192.168.4.9", "192.168.4.8", "192.168.4.4" };
+
+using	sockets = std::vector<udpSocket<uint64_t>>;
 
 class	owDelay
 {
@@ -63,7 +67,35 @@ uint	getPort(char* srcNode, char* dstNode)
 	return 5000+(6*srcIdx)+dstIdx;
 }
 
-//ipInfo(selfIP,peerIP,selfIF,portNum)
+void	recvPing(sockets& inSocs, std::vector<owDelay>& owds)
+{
+	uint64_t now;
+
+	for(uint i=0; i<inSocs.size(); i++)
+	{
+		if(inSocs[i].recvTry())
+		{				
+			setTime(now);
+			int64_t owDelay = now - (*inSocs[i].getData());
+			assert(owDelay > 0);
+			owds[i].addEntry(owDelay);
+		}
+	}	
+}
+
+void	sendPing(sockets& outSocs)
+{
+	uint64_t now;
+	static	 uint seqN = 0;
+
+	for(uint i=0; i<outSocs.size(); i++)
+	{
+		setTime(now);
+		outSocs[i].send(&now,seqN);
+	}
+
+	seqN++;
+}
 
 int 	main(int argc, char* argv[])
 {
@@ -73,52 +105,41 @@ int 	main(int argc, char* argv[])
 		exit(1);
 	}
 
+	uint numSrc = atoi(argv[2]);
 	std::string selfIP = WIPs[getIdx(argv[1])];
-	unsigned int numSrc = atoi(argv[2]);
 
+	sockets 		inSocs, outSocs;
 	std::vector<owDelay>	delays;
-	std::vector<udpSocket<uint64_t>> inSockets, outSockets;
 
-	for(int i=0; i<numSrc; i++)
+	for(uint i=0; i<numSrc; i++)
 	{
 		delays.emplace_back(argv[3+i], argv[1]);
-		inSockets.emplace_back(ipInfo(selfIP, WIPs[getIdx(argv[3+i])], "wlan0", getPort(argv[3+i],argv[1])));
+		//ipInfo(selfIP,peerIP,selfIF,portNum)
+		inSocs.emplace_back(ipInfo(selfIP, WIPs[getIdx(argv[3+i])], "wlan0", getPort(argv[3+i],argv[1])));
 	}
 
-	for(int i=0; i<(argc-(3+numSrc)); i++)
+	for(uint i=0; i<(argc-(3+numSrc)); i++)
 	{
-		outSockets.emplace_back(ipInfo(selfIP, WIPs[getIdx(argv[3+numSrc+i])], "wlan0", getPort(argv[1],argv[3+numSrc+i])));
+		outSocs.emplace_back(ipInfo(selfIP, WIPs[getIdx(argv[3+numSrc+i])], "wlan0", getPort(argv[1],argv[3+numSrc+i])));
 	}
 
-	uint64_t now;
-	unsigned int seqN = 0;
-
-	for(int j=0; j<10000; j++)
+	for(uint i=0; i<numPings; i++)
 	{
-		for(unsigned int i=0; i<inSockets.size(); i++)
-		{
-			if(inSockets[i].recvTry())
-			{				
-				setTime(now);
-				int64_t owDelay = now - (*inSockets[i].getData());
-				assert(owDelay > 0);
-				delays[i].addEntry(owDelay);
-			}
-		}
+		recvPing(inSocs,delays);
 
-
-		for(unsigned int i=0; i<outSockets.size(); i++)
-		{
-			setTime(now);
-			outSockets[i].send(&now,seqN);
-		}
-
-		seqN++;
+		sendPing(outSocs);
 
 		usleep(interval);
 	}
 
-	for(unsigned int i=0; i<inSockets.size(); i++)	{ delays[i].dump(); }
+	for(uint i=0; i<numAfter; i++)		
+	{ 
+		recvPing(inSocs,delays); 
+
+		usleep(interval);
+	}
+
+	for(uint i=0; i<inSocs.size(); i++)	{ delays[i].dump(); }
 
 	return 0;
 }
