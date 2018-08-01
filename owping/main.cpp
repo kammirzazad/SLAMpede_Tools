@@ -6,8 +6,8 @@
 #include <fstream>
 
 const uint interval = 1000;
-const uint numPings = 10000;
-const uint numAfter = 1000;
+const uint numPings = 100000;
+const uint numAfter = numPings/10;
 
 std::string WIPs[6] = { "192.168.4.14", "192.168.4.15", "192.168.4.16", "192.168.4.9", "192.168.4.8", "192.168.4.4" };
 
