@@ -21,15 +21,12 @@ dat4	dd4;
 dat5	dd5;
 dat6	dd6;
 
-ipInfo	info0(WIPs[0], WIPs[1], "wlan0", 5000);
-
-udpSocket<dat1> socket1(info0);
-udpSocket<dat2> socket2(info0);
-udpSocket<dat3> socket3(info0);
-udpSocket<dat4> socket4(info0);
-udpSocket<dat5> socket5(info0);
-udpSocket<dat6> socket6(info0);
-
+udpSocket<dat1> socket1(ipInfo(WIPs[0], WIPs[1], "wlan0", 5000));
+udpSocket<dat2> socket2(ipInfo(WIPs[0], WIPs[1], "wlan0", 5001));
+udpSocket<dat3> socket3(ipInfo(WIPs[0], WIPs[1], "wlan0", 5002));
+udpSocket<dat4> socket4(ipInfo(WIPs[0], WIPs[1], "wlan0", 5003));
+udpSocket<dat5> socket5(ipInfo(WIPs[0], WIPs[1], "wlan0", 5004));
+udpSocket<dat6> socket6(ipInfo(WIPs[0], WIPs[1], "wlan0", 5005));
 
 uint	getIdx(char* node)
 {
@@ -107,11 +104,11 @@ int 	main(int argc, char* argv[])
 	{
 		times.clear();
 
-		for(uint j=0; j<10; j++)
+		for(uint j=0; j<100; j++)
 		{
 			start.init();
 			send(dataSizes[i]);
-			times.push_back(start.getMilliSec());
+			times.push_back(start.getTimePassed());
 	
 			usleep(10*1000);
 		}
