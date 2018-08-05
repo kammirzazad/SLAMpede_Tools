@@ -57,6 +57,7 @@ uint	getIdx(char* node)
 	if( strcmp(node,"p1") == 0 ) { return 5; }
 
 	std::cout << "Unknown node " << node << std::endl;
+	exit(1);
 }
 
 uint	getPort(char* srcNode, char* dstNode)
