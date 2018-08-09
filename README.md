@@ -17,7 +17,7 @@ Scripts for emulating specific network delays/losses
 For disabling/enabling Network Time Protocol.  (make sure to randomize system time afterwards)
 
 ## owping
-An attempt to profile one-way delay between hosts, highly depends on accuracy of time synchronization
+An attempt to profile one-way delay between hosts, highly depends on the accuracy of the time synchronization scheme
 
 ## ping
 Scripts for pinging hosts from each other over Ethernet of Wi-Fi
