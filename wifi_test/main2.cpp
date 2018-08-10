@@ -5,6 +5,8 @@
 #include <cassert>
 #include <fstream>
 
+#define	COUNT 	10000
+
 std::string WIPs[6] = { "192.168.4.14", "192.168.4.15", "192.168.4.16", "192.168.4.9", "192.168.4.8", "192.168.4.4" };
 
 struct	data 
@@ -44,7 +46,7 @@ int main(int argc, char* argv[])
 
 		udpSocket<data> socket(ipInfo(WIPs[0], WIPs[1], "wlan0", 5000));
 
-		for(int i=0; i<100; i++)
+		for(int i=0; i<COUNT; i++)
 		{
 			usleep(1000);
 			socket.send(&arg,i);
@@ -54,7 +56,7 @@ int main(int argc, char* argv[])
 	{
 		udpSocket<data> socket(ipInfo(WIPs[1], WIPs[0], "wlan0", 5000));
 
-		for(int i=0; i<100; i++)
+		for(int i=0; i<COUNT; i++)
 		{
 			socket.recv();
 
