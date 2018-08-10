@@ -54,10 +54,14 @@ int main(int argc, char* argv[])
 	{
 		udpSocket<data> socket(ipInfo(WIPs[1], WIPs[0], "wlan0", 5000));
 
-		while(true)
+		for(int i=0; i<100; i++)
 		{
 			socket.recv();
-			std::cout << socket.getSeqNumber() << " " << check(*socket.getData()) << std::endl;
+
+			if( ! check(*socket.getData()) ) 
+			{
+				std::cout << socket.getSeqNumber() << std::endl;
+			}
 		}
 	}
 
