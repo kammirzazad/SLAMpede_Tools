@@ -9,25 +9,25 @@ std::string WIPs[6] = { "192.168.4.14", "192.168.4.15", "192.168.4.16", "192.168
 
 struct	data 
 {
-	float arr[10][10];
+	float arr[2][100];
 };
 
 float	getVal(int i, int j)
 {
-	return ((10*i)+j)/1000.0;
+	return ((100*i)+j)/10000.0;
 }
 
 void	set(data& arg)
 {
-	for(int i=0; i<10; i++)
-		for(int j=0; j<10; j++)
+	for(int i=0; i<2; i++)
+		for(int j=0; j<100; j++)
 			arg.arr[i][j] = getVal(i,j);
 }
 
 bool	check(const data& arg)
 {
-	for(int i=0; i<10; i++)
-		for(int j=0; j<10; j++)
+	for(int i=0; i<2; i++)
+		for(int j=0; j<100; j++)
 			if ( arg.arr[i][j] != getVal(i,j) )
 				return false;
 
