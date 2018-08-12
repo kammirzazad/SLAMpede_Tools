@@ -1,8 +1,10 @@
 # SLAMpede Tools
 
-Applications/scripts in this repository target cluster of development boards in SLAM Lab at UT Austin named SLAMpede (named after [stampede](https://www.tacc.utexas.edu/systems/stampede)). This cluster consists of six Raspberry Pi 3 that run Linux-based Raspbian "Stretch" operating system and are connected to each other via Ethernet and Wi-Fi.
+Applications/scripts in this repository target cluster of development boards in SLAM Lab at UT Austin named SLAMpede (named after [stampede](https://www.tacc.utexas.edu/systems/stampede)). This cluster consists of six Raspberry Pi 3 that run Linux-based Raspbian "Stretch" operating system and are connected to each other via Ethernet and Wi-Fi. Picture below shows the cluster with the nodes (blue0,orange0,pink0) and Ethernet switch at the bottom, (blue1,orange1,pink1) at the middle and AP on the top shelf.
 
-Directories include:
+![Picture of SLAMpede](https://raw.githubusercontent.com/kammirzazad/SLAMpede_Tools/master/SLAMpede.jpeg)
+
+Directories of this repository include:
 
 ## dvfs
 Scripts for disabling on-demand governor and setting frequency to maximum   
