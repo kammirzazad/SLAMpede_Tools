@@ -3,7 +3,7 @@
 Applications/scripts in this repository target cluster of development boards in SLAM Lab at UT Austin named SLAMpede (named after [stampede](https://www.tacc.utexas.edu/systems/stampede)). This cluster consists of six Raspberry Pi 3 that run Linux-based Raspbian "Stretch" operating system and are connected to each other via Ethernet and Wi-Fi. Picture below shows the cluster with the nodes (blue0,orange0,pink0) and Ethernet switch at the bottom, (blue1,orange1,pink1) at the middle and AP on the top shelf.
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/kammirzazad/SLAMpede_Tools/master/SLAMpede.jpeg" width="400px" />
+  <img src="https://raw.githubusercontent.com/kammirzazad/SLAMpede_Tools/master/SLAMpede.jpeg" width="640px" />
   <p>Picture of SLAMpede</p>
 </div>
 
