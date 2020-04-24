@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE eventgenerator SYSTEM "file:///usr/share/emane/dtd/eventgenerator.dtd">
 <eventgenerator library="eelgenerator">
-<param name="inputfile" value="2node.eel" />
+<param name="inputfile" value="6node_50.eel" />
 <paramlist name="loader">
 	<item value="commeffect:eelloadercommeffect:delta"/>
 	<item value="location,velocity,orientation:eelloaderlocation:delta"/>
